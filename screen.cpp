@@ -20,7 +20,7 @@ namespace Hamza {
                 renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_PRESENTVSYNC);
                 texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_STATIC,WIDTH,HEIGHT);
                 buffer = new Uint32[WIDTH * HEIGHT];
-                memset(buffer,0xFF,WIDTH*HEIGHT*sizeof(Uint32));
+                memset(buffer,0x00,WIDTH*HEIGHT*sizeof(Uint32));
                 return true;
             } else {
                 std::cout << "SDL failed to initialize" << std::endl;
@@ -46,14 +46,15 @@ namespace Hamza {
 
             buffer[(y*WIDTH)+x] = color; 
         }
+
         bool Screen::ProcessEvents(){
             SDL_Event windowEvent;
             if (SDL_PollEvent(&windowEvent)){
                 if (windowEvent.type == SDL_QUIT) {
-                    Close();
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
 
         void Screen::Close(){
