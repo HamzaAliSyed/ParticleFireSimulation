@@ -2,7 +2,7 @@
 #include <iostream>
 
 namespace Hamza {
-        Screen::Screen() : window(NULL),renderer(NULL), texture(NULL), buffer(NULL),running(false) {
+        Screen::Screen() : window(NULL),renderer(NULL), texture(NULL), buffer(NULL),running(false), blurBuffer(NULL) {
 
         }
 
@@ -20,7 +20,9 @@ namespace Hamza {
                 renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_PRESENTVSYNC);
                 texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_STATIC,WIDTH,HEIGHT);
                 buffer = new Uint32[WIDTH * HEIGHT];
+                blurBuffer = new Uint32[WIDTH * HEIGHT];
                 memset(buffer,0x00,WIDTH*HEIGHT*sizeof(Uint32));
+                memset(blurBuffer,0x00,WIDTH*HEIGHT*sizeof(Uint32));
                 return true;
             } else {
                 std::cout << "SDL failed to initialize" << std::endl;
@@ -51,8 +53,41 @@ namespace Hamza {
             buffer[(y*WIDTH)+x] = color; 
         }
 
-        void Screen::Clear(){
-            memset(buffer,0,WIDTH*HEIGHT*sizeof(Uint32));
+
+        void Screen::BoxBlur(){
+            Uint32 *temp = buffer;
+            buffer = blurBuffer;
+            blurBuffer = temp;
+
+            for (int y=0; y<Screen::HEIGHT;y++) {
+                for (int x=0; x<Screen::WIDTH;x++) {
+                    int redTotal = 0;
+                    int greenTotal = 0;
+                    int blueTotal = 0;
+
+                    for(int row = -1; row <=1;row++){
+                        for(int col = -1; col <=1;col++){
+                            int currentX = x + col;
+                            int currentY = y +row;
+
+                            if(currentX >=0 && currentX < WIDTH && currentY >=0 && currentY <HEIGHT){
+                                Uint32 color = blurBuffer[currentY * WIDTH + currentX];
+                                Uint8 red = color >> 24;
+                                Uint8 green = color >> 16;
+                                Uint8 blue = color >> 8;
+
+                                redTotal += red;
+                                greenTotal += green;
+                                blueTotal += blue;
+                            }
+                        }
+                    }
+                    Uint8 red = redTotal/9;
+                    Uint8 green = greenTotal/9;
+                    Uint8 blue = blueTotal/9;
+                    SetPixels(x,y,red,green,blue);
+                }
+            }
         }
 
         bool Screen::ProcessEvents(){
@@ -68,6 +103,7 @@ namespace Hamza {
         void Screen::Close(){
             running = false;
             delete []buffer;
+            delete []blurBuffer;
             SDL_DestroyTexture(texture);
             SDL_DestroyRenderer(renderer);
             SDL_DestroyWindow(window);

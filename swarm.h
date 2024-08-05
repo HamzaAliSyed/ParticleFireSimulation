@@ -8,7 +8,7 @@ namespace Hamza
         Particle *pointerParticlesArray;
         int lastTime;
         public:
-        const static int MAXPARTICLES = 5000;
+        const static int MAXPARTICLES = 25000;
         Swarm();
         const Particle* const getParticles() {return pointerParticlesArray;};
         void UpdateSwarm(int timeElasped);

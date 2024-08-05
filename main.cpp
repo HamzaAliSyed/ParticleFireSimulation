@@ -18,7 +18,6 @@ int main(int argc, char* argv[]){
     while(basicScreen.running == true) {
         const Hamza::Particle* const pointerParticles = mainSwarm.getParticles();
         int elapsedTime = SDL_GetTicks();
-        basicScreen.Clear();
         mainSwarm.UpdateSwarm(elapsedTime);
         unsigned char red = (1+sin(elapsedTime*0.001)*128);
         unsigned char green = (1+sin(elapsedTime*0.005)*128);
@@ -30,6 +29,7 @@ int main(int argc, char* argv[]){
             int posy = individualParticle.positionY * basicScreen.WIDTH/2 + basicScreen.HEIGHT/2;
             basicScreen.SetPixels(posx,posy,red,blue,green);
         }
+        basicScreen.BoxBlur();
         basicScreen.Update();
         basicScreen.ProcessEvents();
         if (basicScreen.ProcessEvents() == false) {

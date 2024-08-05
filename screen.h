@@ -8,6 +8,7 @@ namespace Hamza {
         SDL_Renderer *renderer;
         SDL_Texture *texture;
         Uint32 *buffer;
+        Uint32 *blurBuffer;
 
         public:
         const static int WIDTH = 1280;
@@ -19,6 +20,6 @@ namespace Hamza {
         bool Init();
         void Update();
         void SetPixels(int x, int y, Uint8 red, Uint8 green, Uint8 blue);
-        void Clear();
+        void BoxBlur();
     };
 }
