@@ -36,6 +36,10 @@ namespace Hamza {
         }
 
         void Screen::SetPixels(int x, int y, Uint8 red, Uint8 green, Uint8 blue){
+
+            if(x < 0 || x >= WIDTH || y < 0 || y>= HEIGHT){
+                return;
+            }
             Uint32 color;
             color += red;
             color <<= 8;

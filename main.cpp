@@ -1,23 +1,33 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include "screen.h"
+#include "particle.h"
+#include "swarm.h"
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 
 int main(int argc, char* argv[]){
+    srand(time(NULL));
     Hamza::Screen basicScreen;
 
+    Hamza::Swarm mainSwarm;
     basicScreen.Init();
+    
     while(basicScreen.running == true) {
-        int elapsed = SDL_GetTicks();
-		unsigned char red = (unsigned char)((1 + sin(elapsed * 0.0001)) * 128);
-        unsigned char green = (unsigned char)((1 + sin(elapsed * 0.0003)) * 128);
-        unsigned char blue = (unsigned char)((1 + sin(elapsed * 0.0005)) * 128);
-        for(int y=0; y < basicScreen.HEIGHT; y++) {
-			for(int x=0; x < basicScreen.WIDTH; x++) {
-				basicScreen.SetPixels(x, y, red, green, blue);
-			}
-		}
+        const Hamza::Particle* const pointerParticles = mainSwarm.getParticles();
+        int elapsedTime = SDL_GetTicks();
+        unsigned char red = (1+sin(elapsedTime*0.001)*128);
+        unsigned char green = (1+sin(elapsedTime*0.005)*128);
+        unsigned char blue = (1+sin(elapsedTime*0.009)*128);
+
+        for (int i=0; i<mainSwarm.MAXPARTICLES;i++){
+            Hamza::Particle individualParticle = pointerParticles[i];
+            int posx = (individualParticle.positionX + 1 ) * basicScreen.WIDTH/2;
+            int posy = (individualParticle.positionY + 1 ) * basicScreen.HEIGHT/2;
+            basicScreen.SetPixels(posx,posy,red,blue,green);
+        }
         basicScreen.Update();
         basicScreen.ProcessEvents();
         if (basicScreen.ProcessEvents() == false) {
