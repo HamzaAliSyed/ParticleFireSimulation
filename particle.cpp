@@ -1,27 +1,29 @@
 #include "particle.h"
 #include <stdlib.h>
+#include <math.h>
 
 namespace Hamza 
 {
-    Particle::Particle() 
+    Particle::Particle() : positionX(0), positionY(0)
     {
-        positionX = ((2.0*rand())/RAND_MAX) -1;
-        positionY = ((2.0*rand())/RAND_MAX)-1;
-        xSpeed = 0.01*(((2.0 * rand())/RAND_MAX)-1);
-        ySpeed = 0.01*(((2.0 * rand())/RAND_MAX)-1);
+        particleDirection = (2.0 * M_PI* rand())/RAND_MAX;
+        particleSpeed = (0.01 * rand())/RAND_MAX;
     }
 
     void Particle::Update()
     {
-        positionX+= xSpeed;
-        positionY+= ySpeed;
+        double xSpeed = particleSpeed * cos(particleDirection);
+        double ySpeed = particleSpeed * sin(particleDirection);
+
+        positionX += xSpeed;
+        positionY += ySpeed;
 
         if (positionX <= -1 || positionX >= 1){
-            xSpeed = -xSpeed;
+            positionX -= xSpeed;
         }
 
         if (positionY <= -1 || positionY >= 1){
-            ySpeed = -ySpeed;
+           positionY -= ySpeed;
         }
     }
 }

@@ -27,7 +27,7 @@ int main(int argc, char* argv[]){
         for (int i=0; i<mainSwarm.MAXPARTICLES;i++){
             Hamza::Particle individualParticle = pointerParticles[i];
             int posx = (individualParticle.positionX + 1 ) * basicScreen.WIDTH/2;
-            int posy = (individualParticle.positionY + 1 ) * basicScreen.HEIGHT/2;
+            int posy = individualParticle.positionY * basicScreen.WIDTH/2 + basicScreen.HEIGHT/2;
             basicScreen.SetPixels(posx,posy,red,blue,green);
         }
         basicScreen.Update();
