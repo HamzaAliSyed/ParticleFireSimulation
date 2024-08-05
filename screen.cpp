@@ -51,6 +51,10 @@ namespace Hamza {
             buffer[(y*WIDTH)+x] = color; 
         }
 
+        void Screen::Clear(){
+            memset(buffer,0,WIDTH*HEIGHT*sizeof(Uint32));
+        }
+
         bool Screen::ProcessEvents(){
             SDL_Event windowEvent;
             if (SDL_PollEvent(&windowEvent)){

@@ -19,5 +19,6 @@ namespace Hamza {
         bool Init();
         void Update();
         void SetPixels(int x, int y, Uint8 red, Uint8 green, Uint8 blue);
+        void Clear();
     };
 }

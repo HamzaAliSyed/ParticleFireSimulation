@@ -10,6 +10,7 @@ namespace Hamza
         const static int MAXPARTICLES = 5000;
         Swarm();
         const Particle* const getParticles() {return pointerParticlesArray;};
+        void UpdateSwarm();
         ~Swarm();
     };
 
