@@ -12,7 +12,7 @@ namespace Hamza
         double positionY;
         double particleSpeed;
         double particleDirection;
-        void Update();
+        void Update(int interval);
     };
     
 } 

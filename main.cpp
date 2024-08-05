@@ -19,7 +19,7 @@ int main(int argc, char* argv[]){
         const Hamza::Particle* const pointerParticles = mainSwarm.getParticles();
         int elapsedTime = SDL_GetTicks();
         basicScreen.Clear();
-        mainSwarm.UpdateSwarm();
+        mainSwarm.UpdateSwarm(elapsedTime);
         unsigned char red = (1+sin(elapsedTime*0.001)*128);
         unsigned char green = (1+sin(elapsedTime*0.005)*128);
         unsigned char blue = (1+sin(elapsedTime*0.009)*128);
